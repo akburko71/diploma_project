@@ -13,7 +13,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
@@ -27,7 +27,8 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig',
             [
                 'last_username' => $lastUsername,
-                'error' => $error
+                'error' => $error,
+                'is_remember_me' => $request->getSession()->has('IS_REMEMBER_ME')
             ]
         );
     }

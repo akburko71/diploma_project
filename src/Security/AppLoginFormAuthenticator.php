@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
@@ -45,6 +46,24 @@ class AppLoginFormAuthenticator extends AbstractLoginFormAuthenticator
             ]
         );
     }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
+    {
+        if ($request->request->has('_remember_me'))
+        {
+            $request->getSession()->set('IS_REMEMBER_ME', $request->request->get('_remember_me'));
+        }
+        else
+        {
+            if ( $request->getSession()->has('IS_REMEMBER_ME') )
+            {
+                $request->getSession()->remove('IS_REMEMBER_ME' );
+            }
+        }
+
+        return parent::onAuthenticationFailure($request, $exception);
+    }
+
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {

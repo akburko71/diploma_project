@@ -13,8 +13,6 @@ class PublicController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('public/index.html.twig', [
-            'controller_name' => 'PublicController',
-        ]);
+        return $this->render('layouts/index.html.twig');
     }
 }
