@@ -49,14 +49,10 @@ class AppLoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        if ($request->request->has('_remember_me'))
-        {
+        if ($request->request->has('_remember_me')) {
             $request->getSession()->set('IS_REMEMBER_ME', $request->request->get('_remember_me'));
-        }
-        else
-        {
-            if ( $request->getSession()->has('IS_REMEMBER_ME') )
-            {
+        } else {
+            if ( $request->getSession()->has('IS_REMEMBER_ME') ) {
                 $request->getSession()->remove('IS_REMEMBER_ME' );
             }
         }
