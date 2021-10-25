@@ -16,6 +16,14 @@
                                 {{ error.messageKey|trans(error.messageData, 'security') }}
                             </div>
                         {% endif %}
+
+                        {% if app.session.flashBag.peek('success')|length > 0 %}
+                            <div class="alert alert-success" role="alert">
+                                {% for message in app.flashes('success') %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                         <form class="form-signin" method="post">
                             <div class="form-label-group">
                                 <input

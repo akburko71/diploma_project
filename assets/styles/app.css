@@ -390,3 +390,11 @@ body.signin-body {
         opacity: 1;
     }
 }
+
+.form-label-group label span span.form-error-icon {
+    display: none;
+}
+
+.form-label-group label span span span.form-error-message {
+    display: none;
+}
