@@ -1,0 +1,60 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Регистрация на BlaBlaArticle{% endblock %}
+
+{% block body_class %}signin-body{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Регистрация</h5>
+
+                        {% if app.session.flashBag.peek('verify_email_error')|length > 0 %}
+                            <div class="alert alert-error" role="alert">
+                                {% for message in app.flashes('verify_email_error') %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {{ form_start(registrationForm, {
+                            attr: { class: 'form-signin'}
+                        }) }}
+
+                        {{ form_errors(registrationForm.firstName) }}
+                        <div class="form-label-group">
+                            {{ form_widget(registrationForm.firstName, { attr: { class: "form-control", placeholder: "Ваше имя", autofocus: "true" }} ) }}
+                            {{ form_label(registrationForm.firstName, "Ваше Имя" ) }}
+                        </div>
+
+                        {{ form_errors(registrationForm.email) }}
+                        <div class="form-label-group">
+                            {{ form_widget(registrationForm.email, { attr: { class: "form-control", placeholder: "Ваш Email" }}) }}
+                            {{ form_label(registrationForm.email, "Ваш Email" ) }}
+                        </div>
+
+                        {{ form_errors(registrationForm.plainPassword.first) }}
+                        <div class="form-label-group">
+                            {{ form_widget(registrationForm.plainPassword.first, { attr: { class: "form-control", placeholder: "Пароль" }}) }}
+                            {{ form_label(registrationForm.plainPassword.first, "Пароль" ) }}
+                        </div>
+
+                        <div class="form-label-group">
+                            {{ form_widget(registrationForm.plainPassword.second, { attr: { class: "form-control", placeholder: "Подтверждение пароля" }}) }}
+                            {{ form_label(registrationForm.plainPassword.second, "Подтверждение пароля" ) }}
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Регистрация
+                        </button>
+                        <hr class="my-4">
+                        <div class="text-center"><a href="{{ path('app_login') }}">Я уже зарегистрирован</a></div>
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
