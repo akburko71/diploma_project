@@ -4,9 +4,9 @@
 
 {% block body %}
 
-    {% include 'layouts/_nav.html.twig' %}
+    {% include 'layouts/_nav.html.twig' with { is_index: false } %}
 
-    {% include 'layouts/_header.html.twig' %}
+    {% include 'layouts/_header.html.twig' with { is_index: false } %}
 
     <section>
         <div class="container my-5">

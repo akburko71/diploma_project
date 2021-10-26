@@ -1,7 +1,7 @@
 <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
         <span class="navbar-brand">BlaBlaArticle</span>
-        {% if app.request.attributes.get('_route') == 'app_main' %}
+        {% if is_index %}
             <a class="js-scroll-trigger" href="#services">Сервисы</a>
             <a class="js-scroll-trigger" href="#author">Автор</a>
         {% endif %}

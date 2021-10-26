@@ -4,9 +4,9 @@
 
 {% block body %}
 
-    {% include 'layouts/_nav.html.twig' %}
+    {% include 'layouts/_nav.html.twig' with { is_index: true } %}
 
-    {% include 'layouts/_header.html.twig' %}
+    {% include 'layouts/_header.html.twig' with { is_index: true } %}
 
     <section class="features-icons bg-light text-center" id="services">
         <div class="container">
