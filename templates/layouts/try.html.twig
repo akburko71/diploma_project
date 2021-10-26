@@ -2,12 +2,7 @@
 
 {% block title %}BlaBlaArticle - Лучший генератор статей{% endblock %}
 
-{% block body %}
-
-    {% include 'layouts/_nav.html.twig' with { is_index: false } %}
-
-    {% include 'layouts/_header.html.twig' with { is_index: false } %}
-
+{% block content %}
     <section>
         <div class="container my-5">
             <div class="row">
@@ -75,7 +70,6 @@
         </div>
     </section>
 
-
     <section class="call-to-action text-white text-center">
         <div class="overlay"></div>
         <div class="container">
@@ -93,10 +87,9 @@
             </div>
         </div>
     </section>
-
-    {% include 'layouts/_footer.html.twig' %}
-
 {% endblock %}
+
+{% block footer %} {% include 'layouts/_footer.html.twig' %} {% endblock %}
 
 
 
