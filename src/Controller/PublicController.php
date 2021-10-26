@@ -15,4 +15,12 @@ class PublicController extends AbstractController
     {
         return $this->render('layouts/index.html.twig');
     }
+
+    /**
+     * @Route("/try", name="app_try")
+     */
+    public function try(): Response
+    {
+        return $this->render('layouts/try.html.twig');
+    }
 }
