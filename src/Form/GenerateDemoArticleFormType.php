@@ -36,8 +36,7 @@ class GenerateDemoArticleFormType extends AbstractType
                     'class' => 'btn btn-lg btn-primary btn-block text-uppercase',
                     'disabled' => $options['disabled'],
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
