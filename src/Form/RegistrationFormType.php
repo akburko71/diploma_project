@@ -31,17 +31,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'invalid_message' => 'Пароли не совпадают.',
                 'required' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Укажите пароль',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Ваш пароль должен содержать не менее {{ limit }} символов',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
+                'constraints' => $options['constraints_password'],
             ]);
     }
 
@@ -49,6 +39,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'constraints_password' => []
         ]);
     }
 }

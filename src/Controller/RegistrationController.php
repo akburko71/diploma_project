@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -27,20 +29,33 @@ class RegistrationController extends AbstractController
      * @Route("/register", name="app_register")
      */
     public function register(
-        Request $request,
+        Request                     $request,
         UserPasswordHasherInterface $userPasswordHasherInterface,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface    $eventDispatcher
     ): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+
+        $options['constraints_password'] = [
+            new NotBlank([
+                'message' => 'Укажите пароль',
+            ]),
+            new Length([
+                'min' => 6,
+                'minMessage' => 'Ваш пароль должен содержать не менее {{ limit }} символов',
+                'max' => 4096,
+            ]),
+        ];
+
+        $form = $this->createForm(RegistrationFormType::class, $user, $options);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setRoles(["ROLE_USER"]);
             $user->setPassword(
-            $userPasswordHasherInterface->hashPassword(
+                $userPasswordHasherInterface->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )

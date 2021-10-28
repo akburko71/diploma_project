@@ -15,3 +15,4 @@ import $ from 'jquery';
 require('bootstrap/dist/js/bootstrap');
 import 'jquery-easing';
 import './scripts';
+import './dashboard';
