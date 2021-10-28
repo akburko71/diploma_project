@@ -3,17 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\UserProfileFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DashboardController extends AbstractController
 {
@@ -42,15 +39,7 @@ class DashboardController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $options['constraints_password'] = [
-            new Length([
-                'min' => 6,
-                'minMessage' => 'Ваш пароль должен содержать не менее {{ limit }} символов',
-                'max' => 4096,
-            ]),
-        ];
-
-        $userProfileForm = $this->createForm(RegistrationFormType::class, $user, $options);
+        $userProfileForm = $this->createForm(UserProfileFormType::class, $user);
 
         $userProfileForm->handleRequest($request);
 

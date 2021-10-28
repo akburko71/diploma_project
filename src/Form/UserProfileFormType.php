@@ -11,9 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class UserProfileFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,9 +29,6 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'Пароли не совпадают.',
                 'required' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Укажите пароль',
-                    ]),
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Ваш пароль должен содержать не менее {{ limit }} символов',

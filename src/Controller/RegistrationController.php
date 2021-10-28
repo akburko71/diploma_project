@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Events\UserRegisteredEvent;
 use App\Form\RegistrationFormType;
+use App\Form\UserProfileFormType;
 use App\Security\EmailVerifier;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,18 +37,7 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
 
-        $options['constraints_password'] = [
-            new NotBlank([
-                'message' => 'Укажите пароль',
-            ]),
-            new Length([
-                'min' => 6,
-                'minMessage' => 'Ваш пароль должен содержать не менее {{ limit }} символов',
-                'max' => 4096,
-            ]),
-        ];
-
-        $form = $this->createForm(RegistrationFormType::class, $user, $options);
+        $form = $this->createForm(RegistrationFormType::class, $user);
 
         $form->handleRequest($request);
 
