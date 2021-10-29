@@ -1,0 +1,45 @@
+{% extends 'dashboard/dashboard_base.html.twig' %}
+
+{% block dashboard_title %}Профиль{% endblock %}
+
+{% block dashboard_class %}col-xl-6{% endblock %}
+
+{% block dashboard_content %}
+    <div class="card my-4">
+        <div class="card-body">
+            <p>Ваш API токен: {% if app.user.token %} {{ app.user.token }} {% else %} Токен не создан {%  endif %}</p>
+            <a href="{{ path('app_dashboard_new_token') }}" class="btn btn-outline-primary">Создать новый</a>
+        </div>
+    </div>
+
+    {{ form_start(userProfileForm) }}
+
+        {{ form_errors(userProfileForm.firstName) }}
+        <div class="form-label-group">
+            {{ form_widget(userProfileForm.firstName, { attr: { class: "form-control", placeholder: "Ваше имя", autofocus: "true" }} ) }}
+            {{ form_label(userProfileForm.firstName, "Ваше Имя" ) }}
+        </div>
+
+        {{ form_errors(userProfileForm.email) }}
+        <div class="form-label-group">
+            {{ form_widget(userProfileForm.email, { attr: { class: "form-control", placeholder: "Ваш Email" }}) }}
+            {{ form_label(userProfileForm.email, "Ваш Email" ) }}
+        </div>
+
+        {{ form_errors(userProfileForm.plainPassword.first) }}
+        <div class="form-label-group">
+            {{ form_widget(userProfileForm.plainPassword.first, { attr: { class: "form-control", placeholder: "Пароль" }}) }}
+            {{ form_label(userProfileForm.plainPassword.first, "Пароль" ) }}
+        </div>
+
+        <div class="form-label-group">
+            {{ form_widget(userProfileForm.plainPassword.second, { attr: { class: "form-control", placeholder: "Подтверждение пароля" }}) }}
+            {{ form_label(userProfileForm.plainPassword.second, "Подтверждение пароля" ) }}
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Изменить</button>
+    {{ form_end(userProfileForm) }}
+{% endblock %}
+
+
+
