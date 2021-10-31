@@ -79,9 +79,8 @@ class DashboardController extends AbstractController
             $this->em->flush();
 
             if ($user->getEmail() != $userProfileForm->get('email')->getData()) {
-                $user->setEmail($userProfileForm->get('email')->getData());
 
-                $eventDispatcher->dispatch(new EmailChangedEvent($user));
+                $eventDispatcher->dispatch(new EmailChangedEvent($userProfileModel));
 
                 $this->addFlash('flash_message', 'Для изменения Email перейдите по ссылке, отправленной на указанный адрес.');
             }

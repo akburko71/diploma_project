@@ -6,14 +6,25 @@ use App\Entity\User;
 
 class UserProfileModel
 {
+    private $id;
+
     private $firstName;
 
     private $email;
 
     public function __construct(User $user)
     {
+        $this->id = $user->getId();
         $this->firstName = $user->getFirstName();
         $this->email = $user->getEmail();
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     /**

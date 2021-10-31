@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use App\Entity\User;
+use App\Form\Model\UserProfileModel;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class EmailChangedEvent extends Event
 {
-    private User $user;
+    private UserProfileModel $user;
 
-    public function __construct(User $user)
+    public function __construct(UserProfileModel $user)
     {
         $this->user = $user;
     }
