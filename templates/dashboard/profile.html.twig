@@ -4,6 +4,8 @@
 
 {% block dashboard_class %}col-xl-6{% endblock %}
 
+{% block dashboard_profile %}active{% endblock %}
+
 {% block dashboard_content %}
     <div class="card my-4">
         <div class="card-body">
@@ -28,7 +30,14 @@
 
         {{ form_errors(userProfileForm.plainPassword.first) }}
         <div class="form-label-group">
-            {{ form_widget(userProfileForm.plainPassword.first, { attr: { class: "form-control", placeholder: "Пароль" }}) }}
+            {{ form_widget(userProfileForm.plainPassword.first, {
+                    attr: {
+                        class: "form-control",
+                        placeholder: "Пароль",
+                        autocomplete: "new-password"
+                    }
+                })
+            }}
             {{ form_label(userProfileForm.plainPassword.first, "Пароль" ) }}
         </div>
 
