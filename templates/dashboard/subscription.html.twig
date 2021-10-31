@@ -1,0 +1,47 @@
+{% extends 'dashboard/dashboard_base.html.twig' %}
+
+{% block dashboard_title %}Подписка{% endblock %}
+
+{% block dashboard_class %}col-xl-8{% endblock %}
+
+{% block dashboard_subscription %}active{% endblock %}
+
+{% block dashboard_content %}
+    <section class="pricing py-2 row">
+        <div class="container">
+            <div class="row">
+                {% for subscription in subscriptions %}
+                <div class="col-lg-4">
+                    <div class="card mb-5 mb-lg-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-muted text-uppercase text-center">{{ subscription.title }}</h5>
+                            <h6 class="card-price text-center">${{ subscription.cost }}<span class="period">/неделя</span></h6>
+                            <hr>
+                            {{ subscription.description|raw }}
+                            {% if subscription.cost >= app.user.subscription.cost %}
+                                <a
+                                    href="{{ path('app_dashboard_subscription_set', { id: subscription.id }) }}"
+                                    {% if app.user.subscription.cost == subscription.cost %}
+                                        class="btn btn-block btn-secondary text-uppercase disabled"
+                                    {% else %}
+                                        class="btn btn-block btn-primary text-uppercase"
+                                    {% endif %}
+                                >
+                                    {% if app.user.subscription.cost == subscription.cost %}
+                                        Текущий уровень
+                                    {% else %}
+                                        Оформить
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+
