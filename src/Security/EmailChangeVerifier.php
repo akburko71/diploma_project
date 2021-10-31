@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Form\Model\UserProfileModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
-class EmailVerifier
+class EmailChangeVerifier
 {
     private $verifyEmailHelper;
     private $mailer;
@@ -23,12 +24,15 @@ class EmailVerifier
         $this->entityManager = $manager;
     }
 
-    public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(string $verifyEmailRouteName, UserProfileModel $user, TemplatedEmail $email): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             $user->getId(),
-            $user->getEmail()
+            $user->getEmail(),
+            [
+                'newEmail' => $user->getEmail()
+            ]
         );
 
         $context = $email->getContext();
@@ -46,12 +50,11 @@ class EmailVerifier
      */
     public function handleEmailConfirmation(Request $request, UserInterface $user): void
     {
-        $this->verifyEmailHelper->validateEmailConfirmation(substr($request->getUri(), 0, stripos($request->getUri(), '&newEmail') -1), $user->getId(), $user->getEmail());
+        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $request->query->get('newEmail'));
 
-        $user->setIsVerified(true);
+        $user->setEmail($request->query->get('newEmail'));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
-
 }

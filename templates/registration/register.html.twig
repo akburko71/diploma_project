@@ -38,7 +38,14 @@
 
                         {{ form_errors(registrationForm.plainPassword.first) }}
                         <div class="form-label-group">
-                            {{ form_widget(registrationForm.plainPassword.first, { attr: { class: "form-control", placeholder: "Пароль" }}) }}
+                            {{ form_widget(registrationForm.plainPassword.first, {
+                                    attr: {
+                                        class: "form-control",
+                                        placeholder: "Пароль",
+                                        autocomplete: "new-password"
+                                    }
+                                })
+                            }}
                             {{ form_label(registrationForm.plainPassword.first, "Пароль" ) }}
                         </div>
 
