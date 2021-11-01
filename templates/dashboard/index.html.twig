@@ -22,9 +22,9 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">PLUS</h5>
+                <h5 class="card-title">{{ app.user.subscription.title|upper }}</h5>
                 <p class="card-text">Ваш уровень подписки.</p>
-                <a href="#" class="btn btn-primary">Улучшить</a>
+                <a href="{{ path('app_dashboard_subscription') }}" class="btn btn-primary">Улучшить</a>
             </div>
         </div>
         <div class="card">

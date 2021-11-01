@@ -57,6 +57,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $token;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Subscription::class, inversedBy="users")
+     */
+    private $subscription;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $subscriptionExpires;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -178,6 +188,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): self
+    {
+        $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    public function getSubscriptionExpires(): ?\DateTimeInterface
+    {
+        return $this->subscriptionExpires;
+    }
+
+    public function setSubscriptionExpires(?\DateTimeInterface $subscriptionExpires): self
+    {
+        $this->subscriptionExpires = $subscriptionExpires;
 
         return $this;
     }

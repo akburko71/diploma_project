@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Subscription;
 use App\Entity\User;
 use App\Events\EmailChangedEvent;
+use App\Events\SubscriptionSetEvent;
+use App\EventSubscriber\EmailChangedSubscriber;
 use App\Form\Model\UserProfileModel;
 use App\Form\UserProfileFormType;
+use App\Repository\SubscriptionRepository;
 use App\Security\EmailChangeVerifier;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -21,11 +26,17 @@ class DashboardController extends AbstractController
 {
     private EntityManagerInterface $em;
     private EmailChangeVerifier $emailVerifier;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EntityManagerInterface $em, EmailChangeVerifier $emailVerifier)
+    public function __construct(
+        EntityManagerInterface   $em,
+        EmailChangeVerifier      $emailVerifier,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         $this->em = $em;
         $this->emailVerifier = $emailVerifier;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -34,7 +45,7 @@ class DashboardController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('dashboard/index.html.twig',);
+        return $this->render('dashboard/index.html.twig');
     }
 
     /**
@@ -43,8 +54,7 @@ class DashboardController extends AbstractController
      */
     public function profile(
         Request                     $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EventDispatcherInterface    $eventDispatcher
+        UserPasswordHasherInterface $userPasswordHasher
     ): Response
     {
         /** @var User $user */
@@ -80,7 +90,7 @@ class DashboardController extends AbstractController
 
             if ($user->getEmail() != $userProfileForm->get('email')->getData()) {
 
-                $eventDispatcher->dispatch(new EmailChangedEvent($userProfileModel));
+                $this->eventDispatcher->dispatch(new EmailChangedEvent($userProfileModel));
 
                 $this->addFlash('flash_message', 'Для изменения Email перейдите по ссылке, отправленной на указанный адрес.');
             }
@@ -131,5 +141,39 @@ class DashboardController extends AbstractController
         $this->addFlash('flash_message', 'Новый токен успешно сгенерирован.');
 
         return $this->redirectToRoute('app_dashboard_profile');
+    }
+
+    /**
+     * @Route("/dashboard/subscription", name="app_dashboard_subscription")
+     * @IsGranted("ROLE_USER")
+     */
+    public function subscription(SubscriptionRepository $subscriptionRepository): Response
+    {
+        $subscriptions = $subscriptionRepository->findBy([], ["cost" => "ASC"]);
+
+        return $this->render('dashboard/subscription.html.twig', [
+            'subscriptions' => $subscriptions
+        ]);
+    }
+
+    /**
+     * @Route("/dashboard/subscription/{id}/set", name="app_dashboard_subscription_set")
+     * @IsGranted("ROLE_USER")
+     */
+    public function setSubscription(Subscription $subscription): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $user->setSubscription($subscription);
+        $user->setSubscriptionExpires(Carbon::now()->addWeek());
+
+        $this->em->persist($subscription);
+        $this->em->flush();
+
+        $this->eventDispatcher->dispatch(new SubscriptionSetEvent($user));
+
+        $this->addFlash('flash_message', sprintf('Подписка %s оформлена, до %s', mb_strtoupper($subscription->getTitle()), $user->getSubscriptionExpires()->format('d.m.Y')));
+
+        return $this->redirectToRoute('app_dashboard_subscription');
     }
 }
