@@ -39,6 +39,11 @@ class Subscription
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $limitPerHour;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -111,6 +116,18 @@ class Subscription
                 $user->setSubscription(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLimitPerHour(): ?int
+    {
+        return $this->limitPerHour;
+    }
+
+    public function setLimitPerHour(?int $limitPerHour): self
+    {
+        $this->limitPerHour = $limitPerHour;
 
         return $this;
     }

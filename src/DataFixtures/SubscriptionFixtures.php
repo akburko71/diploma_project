@@ -22,6 +22,7 @@ class SubscriptionFixtures extends BaseFixtures
                                 <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Продвинутые возможности генератора</li>
                                 <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Свои модули</li>
                             </ul>')
+                ->setLimitPerHour(2)
             ;
         });
 
@@ -35,6 +36,7 @@ class SubscriptionFixtures extends BaseFixtures
                                 <li><span class="fa-li"><i class="fas fa-check"></i></span>Продвинутые возможности генератора</li>
                                 <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Свои модули</li>
                             </ul>')
+                ->setLimitPerHour(2)
             ;
         });
 
