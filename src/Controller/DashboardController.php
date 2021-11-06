@@ -176,4 +176,16 @@ class DashboardController extends AbstractController
 
         return $this->redirectToRoute('app_dashboard_subscription');
     }
+
+    /**
+     * @Route("/dashboard/create/article", name="app_dashboard_create_article")
+     * @IsGranted("ROLE_USER")
+     */
+    public function createArticle(): Response
+    {
+
+        return $this->render('dashboard/create_article.html.twig', [
+
+        ]);
+    }
 }
